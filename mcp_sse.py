@@ -71,7 +71,7 @@ def api_get_stats(req: ContainerName):
 
     Exemplo de entrada:
     {
-      "container_name": "n8n"
+      "container_name": "Nome completo do container"
     }
     """
     return get_container_stats(req.container_name)
@@ -83,7 +83,7 @@ def api_get_health(req: ContainerName):
 
     Exemplo de entrada:
     {
-      "container_name": "n8n"
+      "container_name": "Nome completo do container"
     }
     """
     return get_container_health(req.container_name)
@@ -95,7 +95,7 @@ def api_get_logs(req: ContainerLogsRequest):
 
     Exemplo de entrada:
     {
-      "container_name": "n8n",
+      "container_name": "Nome completo do container",
       "tail": 100
     }
     """
@@ -108,7 +108,7 @@ def api_get_inspect(req: ContainerName):
 
     Exemplo de entrada:
     {
-      "container_name": "n8n"
+      "container_name": "Nome completo do container"
     }
     """
     return get_container_inspect(req.container_name)
