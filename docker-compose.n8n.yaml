@@ -1,0 +1,70 @@
+volumes:
+  n8n:
+  redis_data:
+
+services:
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node_exporter
+    restart: always
+    #network_mode: "host"
+    pid: "host"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - --path.procfs=/host/proc
+      - --path.sysfs=/host/sys
+      - --path.rootfs=/rootfs
+    #ports:
+    #  - "9100:9100" 
+
+  n8n:
+    image: n8nio/n8n:1.90.0
+    container_name: n8n
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      N8N_BASIC_AUTH_ACTIVE: true
+      N8N_BASIC_AUTH_USER: marcola
+      N8N_BASIC_AUTH_PASSWORD: 12345678987456321
+      N8N_PORT: 5678
+      N8N_PROTOCOL: https
+      DB_TYPE: sqlite
+      DB_SQLITE_VACUUM_ON_STARTUP: true
+      DB_SQLITE_FILE: /home/node/.n8n/database.sqlite
+      N8N_LOG_LEVEL: debug
+      # Exemplo de como conectar com Redis se for usar para cache, queue, etc.
+      # N8N_REDIS_HOST: redis
+      # N8N_REDIS_PORT: 6379
+    volumes:
+      - n8n:/home/node/.n8n
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    volumes:
+      - redis_data:/data
+    #ports:
+    #  - "6379:6379"
+
+  mcp_sse:
+    build: .  # Usa o Dockerfile do diretório atual
+    container_name: mcp_sse      
+    #ports:
+    #  - "8000:8000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Permite acesso à Docker API do host
+    restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MCP_CLIENT_NAME=marcus-corp
+      - NODE_EXPORTER_URL=http://node-exporter:9100/metrics
+
+
