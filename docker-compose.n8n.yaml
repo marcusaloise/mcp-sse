@@ -64,7 +64,7 @@ services:
     restart: unless-stopped
     environment:
       - PYTHONUNBUFFERED=1
-      - MCP_CLIENT_NAME=marcus-corp
+      - MCP_CLIENT_NAME=Novaera_docker_200
       - NODE_EXPORTER_URL=http://node-exporter:9100/metrics
 
 

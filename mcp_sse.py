@@ -28,8 +28,7 @@ class ContainerLogsRequest(BaseModel):
 
 # TOOLS
 
-
-@mcp_server.tool(name=f"HostMetricsFrom{CLIENT_NAME}")
+@mcp_server.tool(name=f"Captura_as_Informacoes_do_host_do_{CLIENT_NAME}")
 def get_host_metrics():
     """
     Retorna métricas do host coletadas via Node Exporter.
@@ -44,7 +43,7 @@ def get_host_metrics():
     return node_exporter_client.get_all_metrics()
 
 
-@mcp_server.tool(name=f"GetClientNameFrom{CLIENT_NAME}")
+@mcp_server.tool(name=f"Captura_o_nome_do_cliente_{CLIENT_NAME}")
 def get_client_name():
     """
     Retorna o nome do cliente.
@@ -52,7 +51,7 @@ def get_client_name():
     return {"client_name": CLIENT_NAME}
 
 
-@mcp_server.tool(name=f"DockerPsFrom{CLIENT_NAME}")
+@mcp_server.tool(name=f"Captura_a_lista_de_Docker_do_{CLIENT_NAME}")
 def api_list_containers(all_containers: bool):
     """
     Lista containers Docker disponíveis.
@@ -64,7 +63,7 @@ def api_list_containers(all_containers: bool):
     """
     return list_containers(all_containers)
 
-@mcp_server.tool(name=f"DockerStatsFrom{CLIENT_NAME}")
+@mcp_server.tool(name=f"Captura_Docker_Stats_do_{CLIENT_NAME}")
 def api_get_stats(req: ContainerName):
     """
     Obtém stats de uso do container.
@@ -76,7 +75,7 @@ def api_get_stats(req: ContainerName):
     """
     return get_container_stats(req.container_name)
 
-@mcp_server.tool(name=f"HealthcheckFrom{CLIENT_NAME}")
+@mcp_server.tool(name=f"Realiza_Docker_healthcheck_do_{CLIENT_NAME}")
 def api_get_health(req: ContainerName):
     """
     Obtém informações de healthcheck do container.
@@ -88,7 +87,7 @@ def api_get_health(req: ContainerName):
     """
     return get_container_health(req.container_name)
 
-@mcp_server.tool(name=f"DockerLogsFrom{CLIENT_NAME}")
+@mcp_server.tool(name=f"Captura_logs_do_Docker_do_{CLIENT_NAME}")
 def api_get_logs(req: ContainerLogsRequest):
     """
     Obtém os últimos logs do container.
@@ -101,7 +100,7 @@ def api_get_logs(req: ContainerLogsRequest):
     """
     return get_container_logs(req.container_name, req.tail)
 
-@mcp_server.tool(name=f"DockerInspectFrom{CLIENT_NAME}")
+@mcp_server.tool(name=f"Realiza_o_inspect_do_Docker_do_{CLIENT_NAME}")
 def api_get_inspect(req: ContainerName):
     """
     Retorna o inspect completo do container.
@@ -115,3 +114,4 @@ def api_get_inspect(req: ContainerName):
 
 if __name__ == "__main__":
     mcp_server.run(transport="sse")
+
